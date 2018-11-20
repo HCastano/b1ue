@@ -59,7 +59,7 @@ void loop() {
 
   delay(1500);
   for (int i = 90; i >= 20; i--) {
-    delay(15);
+    delay(5);
 
     uint16_t mich_pulselen = map(i, 0, 180, MICH_SERVOMIN, MICH_SERVOMAX);
     uint16_t max_pulselen = map(i, 180, 0, MAX_SERVOMIN, MAX_SERVOMAX);
@@ -82,7 +82,7 @@ void loop() {
 
   delay(500);
   for (int i = 20; i <= 140; i++) {
-    delay(15);
+    delay(5);
 
     uint16_t mich_pulselen = map(i, 0, 180, MICH_SERVOMIN, MICH_SERVOMAX);
     uint16_t max_pulselen = map(i, 180, 0, MAX_SERVOMIN, MAX_SERVOMAX);
@@ -105,7 +105,7 @@ void loop() {
 
   delay(200);
   for (int i = 140; i >= 20; i--) {
-    delay(15);
+    delay(5);
 
     uint16_t mich_pulselen = map(i, 0, 180, MICH_SERVOMIN, MICH_SERVOMAX);
     uint16_t max_pulselen = map(i, 180, 0, MAX_SERVOMIN, MAX_SERVOMAX);
@@ -127,7 +127,7 @@ void loop() {
   }
 
   for (int i = 20; i <= 90; i++) {
-    delay(15);
+    delay(5);
 
     uint16_t mich_pulselen = map(i, 0, 180, MICH_SERVOMIN, MICH_SERVOMAX);
     uint16_t max_pulselen = map(i, 180, 0, MAX_SERVOMIN, MAX_SERVOMAX);
