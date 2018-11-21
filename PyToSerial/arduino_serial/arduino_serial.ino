@@ -65,6 +65,7 @@ void sweepServo(Servo servo) {
 
 void increaseSweep(Servo servo) {
   for (int i = servo.previousAngle; i <= servo.nextAngle; i++) {
+    // TODO: Look into changing this to -90 to 90
     uint16_t pulseLength = map(i, 0, 180, servo.servoMin, servo.servoMax);
     pwm.setPWM(servo.id, 0, pulseLength);
   }
@@ -86,6 +87,18 @@ void setServoPositions(ServoAngles angles) {
 
   servo2.nextAngle = angles.B;
   sweepServo(servo2);
+
+  servo3.nextAngle = angles.C;
+  sweepServo(servo3);
+
+  servo4.nextAngle = angles.D;
+  sweepServo(servo4);
+
+  servo5.nextAngle = angles.E;
+  sweepServo(servo5);
+
+  servo6.nextAngle = angles.F;
+  sweepServo(servo6);
 }
 
 // -- Standard Arduino Functions -- //
@@ -119,7 +132,11 @@ void loop() {
       // six angles and we can go ahead and send that to the motors
       if (c == 'E') {
         Serial.println(c);
-        ServoAngles newAngles = (ServoAngles) {120, 120}; // , 120, 60};
+        // {120 -> Goes down, 120 -> Goes up}
+        ServoAngles newAngles = (ServoAngles) {60, 120, 60, 120, 60, 120};
+        setServoPositions(newAngles);
+      } else if (c == 'X') {
+        ServoAngles newAngles = (ServoAngles) {90, 90, 90, 90, 90, 90};
         setServoPositions(newAngles);
       }
       Serial.println(c);

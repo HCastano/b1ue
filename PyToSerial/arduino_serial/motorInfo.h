@@ -17,6 +17,13 @@
 #define LISA_SERVOMAX  600
 
 // The servos come in pairs
+// The first motor in the pair will go "up" when the
+// angles commanded are less than 90, while the second
+// motor in the pair will go up when angles less than 90
+// are provided
+//
+// e.g To make Michelle and Max go up by 30-deg, Michelle
+// needs to be commanded to 60-deg and Max to 120-deg
 enum ServoID {
   // -- A + A` --
   Michelle,
@@ -42,6 +49,10 @@ struct Servo {
 // TODO: Do this elsewhere
 Servo servo1 = {Michelle, 90, 90, MICH_SERVOMIN, MICH_SERVOMAX};
 Servo servo2 = {Max, 90, 90, MAX_SERVOMIN, MAX_SERVOMAX};
+Servo servo3 = {Jimmy, 90, 90, JIMMY_SERVOMIN, JIMMY_SERVOMAX};
+Servo servo4 = {Bobby, 90, 90, BOBBY_SERVOMIN, BOBBY_SERVOMAX};
+Servo servo5 = {Rupert, 90, 90, RUPERT_SERVOMIN, RUPERT_SERVOMAX};
+Servo servo6 = {Lisa, 90, 90, LISA_SERVOMIN, LISA_SERVOMAX};
 
 struct ServoAngles {
     uint16_t A;
