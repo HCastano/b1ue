@@ -63,6 +63,8 @@ struct ServoAngles {
     uint16_t F;
 };
 
+ServoAngles readAnglesFromSerial();
+
 void sweepServo(Servo servo);
 void increaseSweep(Servo servo);
 void decreaseSweep(Servo servo);

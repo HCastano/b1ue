@@ -101,6 +101,32 @@ void setServoPositions(ServoAngles angles) {
   sweepServo(servo6);
 }
 
+// -- Utility functions -- //
+
+// Might want to do something like have it read until it hits an
+// termination character (\n), at which point we should have all
+// six angles and we can go ahead and send that to the motors
+ServoAngles readAnglesFromSerial() {
+  int angle1 = Serial.read();
+  int angle2 = Serial.read();
+  int angle3 = Serial.read();
+  int angle4 = Serial.read();
+  int angle5 = Serial.read();
+  int angle6 = Serial.read();
+
+  ServoAngles newAngles =
+    (ServoAngles) {
+      angle1,
+      angle2,
+      angle3,
+      angle4,
+      angle5,
+      angle6
+  };
+
+  return newAngles;
+}
+
 // -- Standard Arduino Functions -- //
 
 void setup() {
@@ -126,17 +152,14 @@ void loop() {
     if (Serial.available() > 0) {
       // Read a single byte from the serial buffer
       char c = Serial.read();
+      ServoAngles newAngles = readAnglesFromSerial();
 
-      // Might want to do something like have it read until it hits an
-      // termination character (\n), at which point we should have all
-      // six angles and we can go ahead and send that to the motors
       if (c == 'E') {
         Serial.println(c);
+
         // {120 -> Goes down, 120 -> Goes up}
-        ServoAngles newAngles = (ServoAngles) {60, 120, 60, 120, 60, 120};
         setServoPositions(newAngles);
       } else if (c == 'X') {
-        ServoAngles newAngles = (ServoAngles) {90, 90, 90, 90, 90, 90};
         setServoPositions(newAngles);
       }
       Serial.println(c);
