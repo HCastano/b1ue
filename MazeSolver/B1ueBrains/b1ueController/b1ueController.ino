@@ -103,6 +103,7 @@ void setServoPositions(ServoAngles angles) {
 
 // -- Utility functions -- //
 
+String debug_string = "";
 // Might want to do something like have it read until it hits an
 // termination character (\n), at which point we should have all
 // six angles and we can go ahead and send that to the motors
@@ -114,6 +115,21 @@ ServoAngles readAnglesFromSerial() {
   int angle5 = Serial.read();
   int angle6 = Serial.read();
 
+  // String angles = String(angle1) + ' ' + angle2 + ' ' + angle3 + ' ' + angle4 + ' ' + angle5 + ' ' + angle6 + '\n';
+  // debug_string += angles;
+//  debug_string += angle1;
+//  debug_string += ' ';
+//  debug_string += angle2;
+//  debug_string += ' ';
+//  debug_string += angle3;
+//  debug_string += ' ';
+//  debug_string += angle4;
+//  debug_string += ' ';
+//  debug_string += angle5;
+//  debug_string += ' ';
+//  debug_string += angle6;
+//  debug_string += '-';
+
   ServoAngles newAngles =
     (ServoAngles) {
       angle1,
@@ -123,6 +139,17 @@ ServoAngles readAnglesFromSerial() {
       angle5,
       angle6
   };
+
+//  ServoAngles newAngles =
+//    (ServoAngles) {
+//      90,
+//      90,
+//      90,
+//      90,
+//      90,
+//      90 
+//  };
+
 
   return newAngles;
 }
@@ -138,6 +165,7 @@ void setup() {
 
   // Want to ensure that the motors are at 90-deg before starting anything
   resetMotorPositions();
+  delay(1000);
   delay(10);
 }
 
@@ -153,6 +181,7 @@ void loop() {
       // Read a single byte from the serial buffer
       char c = Serial.read();
       ServoAngles newAngles = readAnglesFromSerial();
+      // setServoPositions(newAngles);
 
       if (c == 'E') {
         Serial.println(c);
@@ -164,8 +193,12 @@ void loop() {
       }
       Serial.println(c);
     }
+    Serial.print(debug_string);
+    Serial.print('\n');
   }
 
   delay(500);
   Serial.flush();
+  Serial.print(debug_string);
+  debug_string += "-------------\n";
 }
