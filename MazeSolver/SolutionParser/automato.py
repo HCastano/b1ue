@@ -14,7 +14,7 @@ class SolutionPath(Enum):
 class RobotControl:
     _FWD_PATH_FILE = "../MazeSolutionPaths/forward_12.csv"
     _BACK_PATH_FILE = "../MazeSolutionPaths/backward_1.csv"
-    # _CORRECTION_FILE = "correction_jerk.csv"
+    _CORRECTION_FILE = "../MazeSolutionPaths/correction_jerk.csv"
     _PORT = '/dev/tty.usbmodem14101'
 
     def __init__(self):
@@ -55,10 +55,10 @@ class RobotControl:
         except FileNotFoundError:
             print("Forward path file is missing... Terminating execution")
             return False
-        # try:
-        #     self.correction_jerk = pd.read_csv(RobotControl._CORRECTION_FILE)
-        # except FileNotFoundError:
-        #     print("Correction file path is missing... Terminating execution")
+        try:
+            self.correction_jerk = pd.read_csv(RobotControl._CORRECTION_FILE)
+        except FileNotFoundError:
+            print("Correction file path is missing... Terminating execution")
             return False
         print("File initialized...")
         return True
@@ -112,32 +112,20 @@ if __name__ == '__main__':
     platform_mover.initialize_arduino()
     if not platform_mover.initialize_files():
         exit()
-    M1to2 = "12"
-    M2to1 = "21"
-    Mreset = "vibe"
     while continue_run:
         solve_direction = input("Please enter:\n"
                                 "1 for solving direction forward path (for marks)\n"
                                 "2 for solving direction backwards path\n"
+                                "3 to jiggle the maze\n"
                                 "Anything else to exit...\n")
         if int(solve_direction) == SolutionPath.forward.value:
             platform_mover.execute_move(SolutionPath.forward.value)
-            if platform_mover.check_ldr():
-                print("Maze solved in forward direction")
-                continue
-            else:
-                print("Vibing big time")
-                platform_mover.execute_move(SolutionPath.reset.value)
-                if platform_mover.check_ldr():
-                    print("Maze solved in forward direction")
-                    continue
-                else:
-                    print("Resetting reverse")
-                    platform_mover.execute_move(SolutionPath.backward.value)
-                    platform_mover.execute_move(SolutionPath.forward.value)
+            print("Maze solved in forward direction")
         elif int(solve_direction) == SolutionPath.backward.value:
             platform_mover.execute_move(SolutionPath.backward.value)
             print("Maze solved in backward direction")
+        elif int(solve_direction) == SolutionPath.reset.value:
+            platform_mover.execute_move(SolutionPath.reset.value)
         else:
             print("Terminating program....")
             platform_mover.close_arduino()
