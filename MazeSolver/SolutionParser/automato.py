@@ -10,10 +10,13 @@ class SolutionPath(Enum):
     forward = 1
     backward = 2
     reset = 3
+    change = 4
 
 class RobotControl:
-    _FWD_PATH_FILE = "../MazeSolutionPaths/forward_12.csv"
-    _BACK_PATH_FILE = "../MazeSolutionPaths/backward_1.csv"
+    # _FWD_PATH_FILE = "../MazeSolutionPaths/grr_testing_fwd.csv"
+    _FWD_PATH_FILE = "../MazeSolutionPaths/forward_15.csv"
+    # _BACK_PATH_FILE = "../MazeSolutionPaths/grr_testing_back.csv"
+    _BACK_PATH_FILE = "../MazeSolutionPaths/backward_2.csv"
     _CORRECTION_FILE = "../MazeSolutionPaths/correction_jerk.csv"
     _PORT = '/dev/tty.usbmodem14101'
 
@@ -117,6 +120,7 @@ if __name__ == '__main__':
                                 "1 for solving direction forward path (for marks)\n"
                                 "2 for solving direction backwards path\n"
                                 "3 to jiggle the maze\n"
+                                "4 to change the solution file\n"
                                 "Anything else to exit...\n")
         if int(solve_direction) == SolutionPath.forward.value:
             platform_mover.execute_move(SolutionPath.forward.value)
@@ -126,6 +130,15 @@ if __name__ == '__main__':
             print("Maze solved in backward direction")
         elif int(solve_direction) == SolutionPath.reset.value:
             platform_mover.execute_move(SolutionPath.reset.value)
+        elif int(solve_direction) == SolutionPath.change.value:
+            forward_file = input("What forward file number: ")
+            # backward_file = input("What backward file number?")
+
+            _FWD_PATH_FILE = "../MazeSolutionPaths/forward_{}.csv".format(forward_file)
+            print(_FWD_PATH_FILE)
+            # _BACK_PATH_FILE = "../MazeSolutionPaths/backward_{}.csv".format(backward_file)
+
+            platform_mover.initialize_files()
         else:
             print("Terminating program....")
             platform_mover.close_arduino()
