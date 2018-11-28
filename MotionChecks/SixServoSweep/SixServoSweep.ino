@@ -40,6 +40,10 @@ typedef enum Servo {
   Rupert,
 };
 
+// Limits for the servo's test sweeps
+int BOT_SWEEP = 10;
+int TOP_SWEEP = 170;
+
 uint8_t servoNum = 0;
 
 void setup() {
@@ -58,7 +62,7 @@ void loop() {
   Serial.println("--- Starting the Loop ---");
 
   delay(1500);
-  for (int i = 90; i >= 20; i--) {
+  for (int i = 90; i >= BOT_SWEEP; i--) {
     delay(5);
 
     uint16_t mich_pulselen = map(i, 0, 180, MICH_SERVOMIN, MICH_SERVOMAX);
@@ -81,7 +85,7 @@ void loop() {
   }
 
   delay(500);
-  for (int i = 20; i <= 140; i++) {
+  for (int i = BOT_SWEEP; i <= TOP_SWEEP; i++) {
     delay(5);
 
     uint16_t mich_pulselen = map(i, 0, 180, MICH_SERVOMIN, MICH_SERVOMAX);
@@ -104,7 +108,7 @@ void loop() {
   }
 
   delay(200);
-  for (int i = 140; i >= 20; i--) {
+  for (int i = TOP_SWEEP; i >= BOT_SWEEP; i--) {
     delay(5);
 
     uint16_t mich_pulselen = map(i, 0, 180, MICH_SERVOMIN, MICH_SERVOMAX);
@@ -126,7 +130,7 @@ void loop() {
     pwm.setPWM(5, 0, lisa_pulselen);
   }
 
-  for (int i = 20; i <= 90; i++) {
+  for (int i = BOT_SWEEP; i <= 90; i++) {
     delay(5);
 
     uint16_t mich_pulselen = map(i, 0, 180, MICH_SERVOMIN, MICH_SERVOMAX);
