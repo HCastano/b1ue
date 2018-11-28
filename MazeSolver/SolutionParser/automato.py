@@ -4,6 +4,12 @@ import math
 import atexit
 import serial
 import struct
+from enum import Enum
+
+class SolutionPath(Enum):
+    forward = 1
+    backward = 2
+    reset = 3
 
 class RobotControl:
     _FWD_PATH_FILE = "../MazeSolutionPaths/forward_12.csv"
@@ -42,12 +48,12 @@ class RobotControl:
         try:
             self.backward_path = pd.read_csv(RobotControl._BACK_PATH_FILE)
         except FileNotFoundError:
-            print("Path 1-2 file path is missing... Terminating execution")
+            print("Backward path file is missing... Terminating execution")
             return False
         try:
             self.forward_path = pd.read_csv(RobotControl._FWD_PATH_FILE)
         except FileNotFoundError:
-            print("Path 2-1 file path is missing... Terminating execution")
+            print("Forward path file is missing... Terminating execution")
             return False
         # try:
         #     self.correction_jerk = pd.read_csv(RobotControl._CORRECTION_FILE)
@@ -59,11 +65,11 @@ class RobotControl:
 
     def execute_move(self, command_dir):
         # TODO: Make these an enum or something nicer
-        if command_dir == "12":
+        if command_dir == SolutionPath.backward.value:
             motor_path = self.backward_path
-        elif command_dir == "21":
+        elif command_dir == SolutionPath.forward.value:
             motor_path = self.forward_path
-        elif command_dir == "vibe":
+        elif command_dir == SolutionPath.reset.value:
             motor_path = self.correction_jerk
         else:
             print("Invalid move command")
@@ -114,24 +120,24 @@ if __name__ == '__main__':
                                 "1 for solving direction forward path (for marks)\n"
                                 "2 for solving direction backwards path\n"
                                 "Anything else to exit...\n")
-        if solve_direction == '1':
-            platform_mover.execute_move(M2to1)
+        if int(solve_direction) == SolutionPath.forward.value:
+            platform_mover.execute_move(SolutionPath.forward.value)
             if platform_mover.check_ldr():
-                print("Maze solved in direction 21")
+                print("Maze solved in forward direction")
                 continue
             else:
                 print("Vibing big time")
-                platform_mover.execute_move(Mreset)
+                platform_mover.execute_move(SolutionPath.reset.value)
                 if platform_mover.check_ldr():
-                    print("Maze solved in direction 21")
+                    print("Maze solved in forward direction")
                     continue
                 else:
                     print("Resetting reverse")
-                    platform_mover.execute_move(M1to2)
-                    platform_mover.execute_move(M2to1)
-        elif solve_direction == '2':
-            platform_mover.execute_move(M1to2)
-            print("Maze solved in direction 12")
+                    platform_mover.execute_move(SolutionPath.backward.value)
+                    platform_mover.execute_move(SolutionPath.forward.value)
+        elif int(solve_direction) == SolutionPath.backward.value:
+            platform_mover.execute_move(SolutionPath.backward.value)
+            print("Maze solved in backward direction")
         else:
             print("Terminating program....")
             platform_mover.close_arduino()
