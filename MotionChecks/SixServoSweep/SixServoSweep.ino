@@ -25,8 +25,8 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define BOBBY_SERVOMIN  165
 #define BOBBY_SERVOMAX  505
 
-#define RUPERT_SERVOMIN  150
-#define RUPERT_SERVOMAX  570
+#define RUPERT_SERVOMIN  160
+#define RUPERT_SERVOMAX  550
 
 #define LISA_SERVOMIN  175
 #define LISA_SERVOMAX  600
