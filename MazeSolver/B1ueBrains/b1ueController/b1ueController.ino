@@ -115,21 +115,6 @@ ServoAngles readAnglesFromSerial() {
   int angle5 = Serial.read();
   int angle6 = Serial.read();
 
-  // String angles = String(angle1) + ' ' + angle2 + ' ' + angle3 + ' ' + angle4 + ' ' + angle5 + ' ' + angle6 + '\n';
-  // debug_string += angles;
-//  debug_string += angle1;
-//  debug_string += ' ';
-//  debug_string += angle2;
-//  debug_string += ' ';
-//  debug_string += angle3;
-//  debug_string += ' ';
-//  debug_string += angle4;
-//  debug_string += ' ';
-//  debug_string += angle5;
-//  debug_string += ' ';
-//  debug_string += angle6;
-//  debug_string += '-';
-
   ServoAngles newAngles =
     (ServoAngles) {
       angle1,
@@ -139,17 +124,6 @@ ServoAngles readAnglesFromSerial() {
       angle5,
       angle6
   };
-
-//  ServoAngles newAngles =
-//    (ServoAngles) {
-//      90,
-//      90,
-//      90,
-//      90,
-//      90,
-//      90 
-//  };
-
 
   return newAngles;
 }
@@ -179,22 +153,10 @@ void loop() {
 
     if (Serial.available() > 0) {
       // Read a single byte from the serial buffer
-      char c = Serial.read();
+
       ServoAngles newAngles = readAnglesFromSerial();
-      // setServoPositions(newAngles);
-
-      if (c == 'E') {
-        Serial.println(c);
-
-        // {120 -> Goes down, 120 -> Goes up}
-        setServoPositions(newAngles);
-      } else if (c == 'X') {
-        setServoPositions(newAngles);
-      }
-      Serial.println(c);
-    }
-    Serial.print(debug_string);
-    Serial.print('\n');
+      setServoPositions(newAngles);
+     }
   }
 
   delay(500);
